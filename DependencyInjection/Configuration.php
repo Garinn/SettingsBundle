@@ -65,6 +65,8 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->addDefaultsIfNotSet()
                         ->children()
+                            ->scalarNode('defaultValue')
+                            ->end()
                             ->scalarNode('scope')
                                 ->defaultValue('all')
                                 ->validate()

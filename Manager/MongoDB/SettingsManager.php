@@ -5,7 +5,7 @@
  * Date: 22/10/15
  * Time: 12:58
  */
-namespace Dmishh\Bundle\SettingsBundle\Manager\MongoDB;
+namespace Dmishh\SettingsBundle\Manager\MongoDB;
 
 use Dmishh\SettingsBundle\Document\Setting;
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
@@ -26,7 +26,7 @@ class SettingsManager extends \Dmishh\SettingsBundle\Manager\SettingsManager {
         array $settingsConfiguration = array()
     ) {
         $this->em = $em;
-        $this->repository = $em->getRepository('Dmishh\Bundle\SettingsBundle\Document\Setting');
+        $this->repository = $em->getRepository('Dmishh\SettingsBundle\Document\Setting');
         $this->serializer = $serializer;
         $this->settingsConfiguration = $settingsConfiguration;
     }

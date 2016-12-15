@@ -80,6 +80,10 @@ class SettingsManager implements SettingsManagerInterface
 
         $value = null;
 
+        if($default === null && array_key_exists('defaultValue', $this->settingsConfiguration[$name])) {
+            $default = $this->settingsConfiguration[$name]['defaultValue'];
+        }
+
         switch ($this->settingsConfiguration[$name]['scope']) {
             case SettingsManagerInterface::SCOPE_GLOBAL:
                 $value = $this->globalSettings[$name];

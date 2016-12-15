@@ -25,12 +25,12 @@ class Setting
     private $id;
 
     /**
-     * @MongoDB\String
+     * @MongoDB\Field(type="string")
      */
     private $name;
 
     /**
-     * @MongoDB\String
+     * @MongoDB\Field(type="string")
      */
     private $value;
 
