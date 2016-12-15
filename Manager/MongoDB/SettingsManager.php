@@ -12,6 +12,7 @@ use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
 use Dmishh\SettingsBundle\Exception\WrongScopeException;
 use Dmishh\SettingsBundle\Serializer\SerializerInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Symfony\Component\VarDumper\VarDumper;
 
 class SettingsManager extends \Dmishh\SettingsBundle\Manager\SettingsManager {
 
@@ -46,7 +47,9 @@ class SettingsManager extends \Dmishh\SettingsBundle\Manager\SettingsManager {
         foreach (array_keys($this->settingsConfiguration) as $name) {
             try {
                 $this->validateSetting($name, $owner);
-                $settings[$name] = null;
+                $settings[$name] = array_key_exists('defaultValue', $this->settingsConfiguration[$name])
+                    ? $this->settingsConfiguration[$name]['defaultValue']
+                    : null;
             } catch (WrongScopeException $e) {
                 continue;
             }

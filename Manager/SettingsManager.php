@@ -15,6 +15,7 @@ use Dmishh\SettingsBundle\Exception\UnknownSettingException;
 use Dmishh\SettingsBundle\Exception\WrongScopeException;
 use Dmishh\SettingsBundle\Serializer\SerializerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Settings Manager provides settings management and persistence using Doctrine's Object Manager.
@@ -79,7 +80,6 @@ class SettingsManager implements SettingsManagerInterface
         $this->loadSettings($owner);
 
         $value = null;
-
         if($default === null && array_key_exists('defaultValue', $this->settingsConfiguration[$name])) {
             $default = $this->settingsConfiguration[$name]['defaultValue'];
         }
@@ -329,7 +329,9 @@ class SettingsManager implements SettingsManagerInterface
         foreach (array_keys($this->settingsConfiguration) as $name) {
             try {
                 $this->validateSetting($name, $owner);
-                $settings[$name] = null;
+                $settings[$name] = array_key_exists('defaultValue', $this->settingsConfiguration[$name])
+                    ? $this->settingsConfiguration[$name]['defaultValue']
+                    : null;
             } catch (WrongScopeException $e) {
                 continue;
             }
