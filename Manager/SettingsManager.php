@@ -25,6 +25,8 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 class SettingsManager implements SettingsManagerInterface
 {
+    const MAX_LIFETIME_IN_MINUTES = 5;
+
     /**
      * @var array
      */
@@ -54,6 +56,9 @@ class SettingsManager implements SettingsManagerInterface
      * @var array
      */
     protected $settingsConfiguration;
+
+    /** @var \DateTime */
+    protected $settingsLoadedAt;
 
     /**
      * @param ObjectManager $em
@@ -296,9 +301,18 @@ class SettingsManager implements SettingsManagerInterface
      */
     private function loadSettings(SettingsOwnerInterface $owner = null)
     {
+        $forceReload = false;
+        if($this->settingsLoadedAt) {
+            $ageInMinutes = (time() - $this->settingsLoadedAt->getTimestamp()) / 60;
+            if($ageInMinutes > self::MAX_LIFETIME_IN_MINUTES) {
+                $forceReload = true;
+            }
+        }
+
         // Global settings
-        if ($this->globalSettings === null) {
+        if ($forceReload || $this->globalSettings === null) {
             $this->globalSettings = $this->getSettingsFromRepository();
+            $this->settingsLoadedAt = new \DateTime();
         }
 
         // User settings
