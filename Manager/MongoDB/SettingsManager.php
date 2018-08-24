@@ -55,6 +55,8 @@ class SettingsManager extends \Dmishh\SettingsBundle\Manager\SettingsManager {
             }
         }
 
+        $this->em->clear(Setting::class);
+
         /** @var Setting $setting */
         foreach ($this->repository->findBy(
             array('owner.id' => $owner === null ? null : $owner->getSettingIdentifier())
